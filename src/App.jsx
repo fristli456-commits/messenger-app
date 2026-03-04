@@ -134,19 +134,14 @@ useEffect(() => {
 useEffect(() => {
   async function checkVersion() {
     try {
-      const res = await fetch("/version.json?nocache=" + Date.now());
+      const res = await fetch("https://push-server-zwzf.onrender.com/version.json?nocache=" + Date.now());
       const data = await res.json();
 
-      const localVersion = localStorage.getItem("app_version");
+      const localVersion = localStorage.getItem("app_version") || "0";
 
-      if (!localVersion) {
-        localStorage.setItem("app_version", data.version);
-        return;
-      }
-
-      if (localVersion !== data.version) {
-        setUpdateAvailable(true);
-      }
+if (localVersion !== data.version) {
+  setUpdateAvailable(true);
+}
 
     } catch (e) {
       console.log("version check failed");
