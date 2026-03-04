@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "476706574952",
+    "firebase_url": "https://messenger-chat-c605f-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "messenger-chat-c605f",
+    "storage_bucket": "messenger-chat-c605f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476706574952:android:8931fde53f13d7b18621dd",
+        "android_client_info": {
+          "package_name": "com.messenger.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ2WP_9igWQXBjGUpANiAgutLGKPIS5jY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

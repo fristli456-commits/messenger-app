@@ -1,0 +1,34 @@
+.chat-switcher {
+  width: 60px;
+  background: #11121a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  gap: 12px;
+}
+
+.switch-item {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #2b2d42;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+  color: white;
+}
+
+.switch-item:hover {
+  background: #3f4170;
+}
+
+.switch-item.active {
+  background: linear-gradient(135deg, #7b5cff, #9c4dff);
+}
+
+.switch-add {
+  margin-top: auto;
+}

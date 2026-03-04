@@ -1,0 +1,6 @@
+{
+  "appId": "com.messenger.app",
+  "appName": "Messenger",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
