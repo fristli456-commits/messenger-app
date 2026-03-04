@@ -3,6 +3,8 @@ import { db, auth } from "./firebase";
 import { storage } from "./firebase";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import ChatSwitcher from "./components/ChatSwitcher"
+import { FileOpener } from '@capacitor-community/file-opener';
+import { Filesystem, Directory } from "@capacitor/filesystem";
 import {
   ref,
   push,
@@ -165,6 +167,60 @@ useEffect(() => {
   return () => unsubscribe();
 }, []);
 
+async function downloadUpdate() {
+  try {
+    setDownloading(true);
+
+    const url = "https://push-server-zwzf.onrender.com/app.apk";
+
+    const response = await fetch(url);
+
+    const reader = response.body.getReader();
+    const contentLength = +response.headers.get("Content-Length");
+
+    let received = 0;
+    const chunks = [];
+
+    while (true) {
+      const { done, value } = await reader.read();
+
+      if (done) break;
+
+      chunks.push(value);
+      received += value.length;
+
+      const percent = Math.floor((received / contentLength) * 100);
+      setDownloadProgress(percent);
+    }
+
+    const blob = new Blob(chunks);
+
+    const base64 = await blobToBase64(blob);
+
+    await Filesystem.writeFile({
+      path: "update.apk",
+      data: base64,
+      directory: Directory.Documents
+    });
+
+    await FileOpener.open({
+  filePath: "file:///storage/emulated/0/Documents/update.apk",
+  contentType: "application/vnd.android.package-archive"
+});
+
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function blobToBase64(blob) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result.split(",")[1]);
+    reader.readAsDataURL(blob);
+  });
+}
+
 async function initPush() {
   try {
     const perm = await PushNotifications.requestPermissions();
@@ -239,6 +295,8 @@ async function initPush() {
   const [pendingFile, setPendingFile] = useState(null);
   const [highlightedId, setHighlightedId] = useState(null);
   const [updateAvailable, setUpdateAvailable] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
   // === SEARCH ===
 const [searchMode, setSearchMode] = useState(false);
 const [searchQuery, setSearchQuery] = useState("");
@@ -994,7 +1052,7 @@ if (pendingFile.type.startsWith("image")) {
   <button
     onClick={() => {
       localStorage.setItem("app_version", Date.now());
-      window.open("https://push-server-zwzf.onrender.com/app.apk");
+      downloadUpdate();
     }}
     style={{
       background: "#ff9800",
@@ -1189,6 +1247,32 @@ navigator.clipboard.writeText(texts);
     >
       Отмена
     </button>
+  </div>
+)}
+
+{downloading && (
+  <div style={{
+    position: "fixed",
+    bottom: 20,
+    left: 20,
+    right: 20,
+    background: "#222",
+    padding: 10,
+    borderRadius: 10
+  }}>
+    <div>Загрузка обновления {downloadProgress}%</div>
+
+    <div style={{
+      height: 6,
+      background: "#444",
+      marginTop: 5
+    }}>
+      <div style={{
+        width: downloadProgress + "%",
+        height: "100%",
+        background: "#4CAF50"
+      }} />
+    </div>
   </div>
 )}
 

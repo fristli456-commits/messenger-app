@@ -13,10 +13,13 @@
     "pack": "npm run build && electron-builder"
   },
   "dependencies": {
+    "@capacitor-community/file-opener": "^8.0.0",
     "@capacitor/android": "^8.1.0",
     "@capacitor/cli": "^8.1.0",
     "@capacitor/core": "^8.1.0",
+    "@capacitor/filesystem": "^8.1.2",
     "@capacitor/push-notifications": "^8.0.1",
+    "cordova-plugin-file-opener2": "^4.0.0",
     "firebase": "^12.9.0",
     "firebase-admin": "^13.7.0",
     "firebase-functions": "^7.0.6",
