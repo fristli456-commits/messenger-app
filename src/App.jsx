@@ -999,7 +999,7 @@ if (pendingFile.type.startsWith("image")) {
   <button
     onClick={() => {
       localStorage.setItem("app_version", Date.now());
-      window.location.reload();
+      window.open("https://push-server-zwzf.onrender.com/app.apk");
     }}
     style={{
       background: "#ff9800",
